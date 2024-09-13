@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="main.css" rel="stylesheet" type="text/css">
+    <title>Teachinder</title>
+</head>
+<body>
+<div class = "container">
+    <div class = "top-menu">
+        <header id = "logo">Teachinder</header>
+        <span class = "search">
+            <form>
+            <input type="text" placeholder ="Name, note or age to search">
+        </form>
+        <button>Search</button>
+        </span>
+
+    </div>
+    <div class = "categories-menu">
+        <nav>
+            <a href="#" >Teachers</a>
+            <a href="#" >Statistics</a>
+            <a href="#" class="active">Favorites</a>
+            <a href="#" >About</a>
+        </nav>
+        <button> Add teacher</button>
+
+    </div>
+    <hr>
+
+        <h1>Top Teachers</h1>
+        <div class="filter-section">
+            <span>
+                <label for="age">Age</label>
+                <select id="age">
+                    <option value="18-31">18-31</option>
+                    <option value="32-45">32-45</option>
+                    <option value="46-60">46-60</option>
+                </select>
+            </span>
+
+
+            <span class="divider"></span>
+            <span>
+                <label for="region">Region</label>
+                <select id="region">
+                    <option value="Europe">Europe</option>
+                    <option value="Asia">Asia</option>
+                    <option value="North America">North America</option>
+                </select>
+            </span>
+
+
+
+            <span class="divider"></span>
+            <span>
+                <label for="sex">Sex</label>
+                <select id="sex">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </span>
+
+
+            <span class="divider"></span>
+
+            <input type="checkbox" id="with-photo">
+            <label for="with-photo">Only with photo</label>
+
+            <span class="divider"></span>
+
+            <input type="checkbox" id="favorites">
+            <label for="favorites">Only favorites</label>
+        </div>
+    <div class = "teachers-container">
+        <span class = "teacher-card">
+            <picture>
+                <img src="img/bestofthebestteacherpleasegivemezarah.jpg"  width="200" height="200" alt = "mykola shaparenko">
+            </picture>
+            <span class = "star"> &#11088;</span>
+            <h3 class = "name">Dmytro Zvazhii</h3>
+            <label class = "subject">Web</label>
+            <label class = "country">Ukraine</label>
+        </span>
+        <span class = "teacher-card">
+            <picture>
+                <img src="img/andre.jpg" width="200" height="200" alt = "andre hordashko">
+            </picture>
+            <h3 class = "name">Andre Hordashko</h3>
+            <label class = "subject">Chemistry</label>
+            <label class = "country">Vietnam</label>
+        </span>
+        <span class = "teacher-card">
+            <picture>
+                <img src="img/shapa.jpg"  width="200" height="200" alt = "mykola shaparenko">
+            </picture>
+            <h3 class = "name">Mykola Shaparenko</h3>
+            <label class = "subject">PE</label>
+            <label class = "country">Ukraine</label>
+        </span>
+        <span class = "teacher-card">
+
+            <picture>
+                <img src="img/karp.jpg"  width="200" height="200" alt = "karpachov">
+            </picture>
+            <span class = "star"> &#11088;</span>
+            <h3 class = "name">Dmytro Karpachov</h3>
+            <label class = "subject">Psychology</label>
+            <label class = "country">Ukraine</label>
+        </span>
+        <span class="teacher-card">
+
+        <div class="profile-circle">
+            <span class="initials">A.M</span>
+        </div>
+            <h3 class="name">Anna Muzychuk</h3>
+            <label class="subject">Chess</label>
+            <label class="country">Belarus</label>
+        </span>
+        <span class="teacher-card">
+
+        <div class="profile-circle">
+            <span class="initials">I.R</span>
+        </div>
+            <h3 class="name">Iryna Rychok</h3>
+            <label class="subject">Maths</label>
+            <label class="country">Poland</label>
+        </span>
+
+
+    </div>
+    <hr>
+    <h1>Statistics</h1>
+    <table class="styled-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Speciality <span>&darr;</span></th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Nationality</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Andre Hordashko</td>
+            <td>Chemistry</td>
+            <td>100</td>
+            <td>Male</td>
+            <td>Vietnam</td>
+        </tr>
+        <tr>
+            <td>Mykola Shaparenko</td>
+            <td>PE</td>
+            <td>25</td>
+            <td>Male</td>
+            <td>Ukraine</td>
+        </tr>
+        <tr>
+            <td>Dmytro Karpachov</td>
+            <td>Psychology</td>
+            <td>45</td>
+            <td>Male</td>
+            <td>Ukraine</td>
+        </tr>
+        <tr>
+            <td>Jonathan Jacobs</td>
+            <td>Math</td>
+            <td>32</td>
+            <td>Male</td>
+            <td>England</td>
+        </tr>
+        <tr>
+            <td>Nathaniel White</td>
+            <td>Computer Science</td>
+            <td>37</td>
+            <td>Male</td>
+            <td>Austria</td>
+        </tr>
+        <tr>
+            <td>Frank Medina</td>
+            <td>English</td>
+            <td>43</td>
+            <td>Male</td>
+            <td>Italy</td>
+        </tr>
+        <tr>
+            <td>Ella Curtis</td>
+            <td>Chess</td>
+            <td>34</td>
+            <td>Female</td>
+            <td>USA</td>
+        </tr>
+        <tr>
+            <td>Claire Simmons</td>
+            <td>Art</td>
+            <td>38</td>
+            <td>Female</td>
+            <td>Netherlands</td>
+        </tr>
+        <tr>
+            <td>Benjamin Knight</td>
+            <td>Biology</td>
+            <td>44</td>
+            <td>Male</td>
+            <td>Scotland</td>
+        </tr>
+        <tr>
+            <td>Norma Rose</td>
+            <td>Statistics</td>
+            <td>36</td>
+            <td>Female</td>
+            <td>France</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <a href="#" class="active">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">...</a>
+        <a href="#">Last</a>
+    </div>
+    <hr>
+    <h1>Favorites</h1>
+    <span class = "favorites">
+
+        <div class="carousel">
+            <div class = "left">&lt;</div>
+            <div class="carousel-items">
+            <span class = "teacher-card">
+            <picture>
+                <img src="img/bestofthebestteacherpleasegivemezarah.jpg"  width="200" height="200" alt = "mykola shaparenko">
+            </picture>
+            <span class = "star"> &#11088;</span>
+            <h3 class = "name">Dmytro Zvazhii</h3>
+
+            <label class = "country">Ukraine</label>
+        </span>
+        <span class = "teacher-card">
+            <picture>
+                <img src="img/andre.jpg" width="200" height="200" alt = "andre hordashko">
+            </picture>
+            <h3 class = "name">Andre Hordashko</h3>
+            <label class = "country">Vietnam</label>
+        </span>
+
+        <span class = "teacher-card">
+            <picture>
+                <img src="img/karp.jpg"  width="200" height="200" alt = "karpachov">
+            </picture>
+            <h3 class = "name">Dmytro Karpachov</h3>
+            <label class = "country">Ukraine</label>
+        </span>
+        <span class="teacher-card">
+
+        <div class="profile-circle">
+            <span class="initials">A.M</span>
+        </div>
+            <h3 class="name">Anna Muzychuk</h3>
+
+            <label class="country">Belarus</label>
+        </span>
+        <span class="teacher-card">
+
+        <div class="profile-circle">
+            <span class="initials">I.R</span>
+        </div>
+            <h3 class="name">Iryna Rychok</h3>
+
+            <label class="country">Poland</label>
+        </span>
+                </div>
+            <div class="right">&gt;</div>
+        </div>
+
+
+
+
+    </span>
+    <hr>
+    <footer>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </footer>
+    <div class = "categories-menu">
+        <nav>
+            <a href="#" >Teachers</a>
+            <a href="#" >Statistics</a>
+            <a href="#" class="active">Favorites</a>
+            <a href="#" >About</a>
+        </nav>
+        <button> Add teacher</button>
+
+    </div>
+
+
+
+</div>
+</body>
+</html>

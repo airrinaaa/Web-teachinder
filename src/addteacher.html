@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="main.css" rel="stylesheet" type="text/css">
+    <title>Add Teacher</title>
+</head>
+<body>
+<div class = "container" id="blur">
+    <div class = "top-menu">
+        <header id = "logo">Teachinder</header>
+        <span class = "search">
+            <form>
+            <input type="text" placeholder ="Name, note or age to search">
+        </form>
+        <button>Search</button>
+        </span>
+
+    </div>
+    <div class = "categories-menu">
+        <nav>
+            <a href="#" >Teachers</a>
+            <a href="#" >Statistics</a>
+            <a href="#" class="active">Favorites</a>
+            <a href="#" >About</a>
+        </nav>
+        <button> Add teacher</button>
+
+    </div>
+    <hr>
+
+    <h1>Top Teachers</h1>
+    <div class="filter-section">
+        <label for="age">Age</label>
+        <select id="age">
+            <option value="18-31">18-31</option>
+            <option value="32-45">32-45</option>
+            <option value="46-60">46-60</option>
+        </select>
+
+        <span class="divider"></span>
+
+        <label for="region">Region</label>
+        <select id="region">
+            <option value="Europe">Europe</option>
+            <option value="Asia">Asia</option>
+            <option value="North America">North America</option>
+        </select>
+
+        <span class="divider"></span>
+
+        <label for="sex">Sex</label>
+        <select id="sex">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <span class="divider">
+
+
+            </span>
+
+        <input type="checkbox" id="with-photo">
+        <label for="with-photo">Only with photo</label>
+
+        <span class="divider"></span>
+
+        <input type="checkbox" id="favorites">
+        <label for="favorites">Only favorites</label>
+    </div>
+    <div class = "teachers-container">
+        <span class = "teacher-card">
+            <picture>
+                <img src="img/andre.jpg" width="200" height="200" alt = "andre hordashko">
+            </picture>
+            <h3 class = "name">Andre Hordashko</h3>
+            <label class = "subject">Chemistry</label>
+            <label class = "country">Ukraine</label>
+        </span>
+        <span class = "teacher-card">
+            <picture>
+                <img src="img/shapa.jpg"  width="200" height="200" alt = "mykola shaparenko">
+            </picture>
+            <h3 class = "name">Mykola Shaparenko</h3>
+            <label class = "subject">PE</label>
+            <label class = "country">Ukraine</label>
+        </span>
+        <span class = "teacher-card">
+
+            <picture>
+                <img src="img/karp.jpg"  width="200" height="200" alt = "karpachov">
+            </picture>
+            <span class = "star"> &#11088;</span>
+            <h3 class = "name">Dmytro Karpachov</h3>
+            <label class = "subject">Psychology</label>
+            <label class = "country">Ukraine</label>
+        </span>
+
+    </div>
+    <hr>
+    <h1>Statistics</h1>
+    <h1>Favorites</h1>
+    <span class = "favorites">
+        <span class = "teacher-card">
+            <picture>
+                <img src="img/andre.jpg" width="200" height="200" alt = "andre hordashko">
+            </picture>
+            <h3 class = "name">Andre Hordashko</h3>
+            <label class = "country">Ukraine</label>
+        </span>
+        <span class = "teacher-card">
+            <picture>
+                <img src="img/shapa.jpg"  width="200" height="200" alt = "mykola shaparenko">
+            </picture>
+            <h3 class = "name">Mykola Shaparenko</h3>
+            <label class = "country">Ukraine</label>
+        </span>
+        <span class = "teacher-card">
+            <picture>
+                <img src="img/karp.jpg"  width="200" height="200" alt = "karpachov">
+            </picture>
+            <h3 class = "name">Dmytro Karpachov</h3>
+            <label class = "country">Ukraine</label>
+        </span>
+
+    </span>
+    <hr>
+    <footer>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </footer>
+    <div class = "categories-menu">
+        <nav>
+            <a href="#" >Teachers</a>
+            <a href="#" >Statistics</a>
+            <a href="#" class="active">Favorites</a>
+            <a href="#" >About</a>
+        </nav>
+        <button> Add teacher</button>
+
+    </div>
+
+
+
+</div>
+<div class="add">
+    <div class="add-top">
+        <h2>Add Teacher</h2>
+        <button class="close-btn">x</button>
+    </div>
+
+        <form>
+            <span>
+                <label>Name:</label>
+                <input type="text" placeholder="Enter name"><br><br>
+            </span>
+
+            <span>
+                <label >Specialty:</label>
+                <select >
+                <option value="Mathematics">Mathematics</option>
+                <option value="Chemistry">Chemistry</option>
+                <option value="PE">PE</option>
+                <option value="Psychology">Psychology</option>
+                </select><br><br>
+            </span>
+            <span class="add-columns">
+            <span>
+                <label >Country:</label>
+                <select  name="country">
+                <option value="Ukraine">Ukraine</option>
+                <option value="USA">USA</option>
+                <option value="Germany">Germany</option>
+                </select><br><br>
+            </span>
+            <span>
+                <label >City:</label>
+                <input type="text" placeholder="Enter city"><br><br>
+            </span>
+            </span>
+            <span class = add-columns>
+            <span>
+                <label >Email:</label>
+                <input type="email"  placeholder="Enter email"><br><br>
+            </span>
+            <span>
+                <label >Phone:</label>
+                <input type="tel" placeholder="Enter phone"><br><br>
+            </span>
+                </span>
+            <span>
+
+                <label >Date of birth:</label>
+                <input type="date" ><br><br>
+            </span>
+            <span>
+                <span>
+    <label>Sex:</label>
+    <input type="radio" name="sex" value="Male"> Male
+    <input type="radio" name="sex" value="Female"> Female<br><br>
+</span>
+            </span>
+            <span>
+                <label >Background color:</label>
+                <input type="color" ><br><br>
+
+            </span>
+            <span>
+                <label>Notes:</label>
+
+            </span>
+            <span>
+                <textarea id="notes" name="notes" placeholder="Additional notes"></textarea><br><br>
+
+            </span>
+
+            <button class = "add-button">Add</button>
+        </form>
+
+</div>
+</body>
+</html>

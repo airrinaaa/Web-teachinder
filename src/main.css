@@ -1,0 +1,520 @@
+body {
+    font-family: Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.container{
+    margin: 25px;
+
+
+}
+.top-menu {
+    display: flex;
+    justify-content: space-between;
+
+
+    align-items: center;
+    padding: 3px;
+
+    margin-bottom: 10px;
+    margin-left: -15px;
+
+}
+#logo {
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    padding: 7px;
+    text-shadow: 2px 2px 0 #d35454, -2px -2px 0 #000000;
+    justify-content: right;
+
+}
+#logo:hover{
+    text-shadow: 4px 4px 2px #d35454, -3px -3px 2px #000000;
+    opacity: 5;
+}
+form {
+    display: flex;
+    align-items: center;
+
+}
+.container input{
+    padding: 7px;
+    border: 1px solid #666666;
+    border-radius: 4px;
+    font-size: 14px;
+    box-shadow: 0 0 3px #666;
+    min-width: 180px;
+    width: auto;
+
+
+
+}
+input:focus{
+    outline: none;
+    border-color: #fa5a5a;
+
+
+}
+.search {
+    display: flex;
+    justify-content: left;
+
+}
+
+button {
+    margin-left: 10px;
+
+    border-color: #fa5a5a;
+    color: #fa5a5a;
+    background-color: white;
+    border-radius: 4px;
+    cursor: pointer;
+
+    padding: 10px 20px;
+    flex-wrap: nowrap;
+
+    font-weight: bold;
+
+}
+
+button:hover {
+    background-color: #fa5a5a;
+    border-color: #e04b4b;
+    color: white;
+}
+.categories-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: white;
+    margin-left: -20px;
+
+}
+
+.categories-menu nav {
+    display: flex;
+    gap: 20px;
+
+}
+input[type="checkbox"] {
+    outline: none;
+    border: none;
+    box-shadow: none;
+
+
+}
+
+.categories-menu nav a {
+    text-decoration: none;
+    color: #fa5a5a;
+
+    font-size: 18px;
+    font-weight: bold;
+
+}
+
+
+.categories-menu nav a:hover,
+.categories-menu nav a.active {
+    color: #d35454;
+}
+.categories-menu nav a #active {
+    color: #d35454;
+}
+
+
+
+
+hr {
+
+    border: 1px solid darkgray;
+    width:40%;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+
+}
+.filter-section {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+    color: darkgray;
+    font-size: 13px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+
+}
+
+.divider{
+    display: flex;
+    flex-direction: column;
+
+}
+.teachers-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin-top: 20px;
+
+    flex-wrap: wrap;
+}
+h3{
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+}
+.teacher-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    gap: 10px;
+    padding: 10px;
+
+    max-height: 600px;
+
+    max-width: 200px;
+
+
+}
+.subject{
+    color: darkgray;
+}
+.teacher-card picture img:hover{
+    border-color: #e04b4b;
+    box-shadow: #666666;
+}
+.teacher-card #profile-circle{
+    border-color: #e04b4b;
+    box-shadow: #666666;
+}
+.star{
+    position: absolute;
+
+    top: 10px; /* Позиціонує зірочку ближче до верху */
+    right: 30px;
+    font-size: 30px; /* Збільшуємо розмір зірочки */
+}
+
+.container picture img {
+
+    border-radius: 50%;
+    border: 5px solid #fa5a5a;
+    box-shadow: 0 0 7px #666;
+}
+#with-photo, #favorites{
+    border-radius: 50%;
+    margin: -80px;
+}
+.divider {
+    border-left: 2px dotted darkgray;
+    height: 20px;
+
+}
+.favorites{
+    justify-items: center;
+    display: flex;
+
+    gap: 10px;
+    padding: 10px;
+    margin-top: 20px;
+
+    flex-wrap: wrap;
+
+}
+.carousel-items {
+    display: flex;
+
+
+    gap: 10px;
+    overflow-x: hidden
+}
+.favorites .country{
+    color: darkgray;
+}
+footer{
+    font-size: 14px;
+
+    color: #666666;
+}
+#blur {
+    filter: blur(5px);
+
+
+    pointer-events: none; /* Забороняє взаємодію з елементом */
+}
+.add {
+    position: fixed;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-bottom: 20px;
+    width: auto;
+    max-height: 90%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+.add input[type = "text"], .add input[type = "email"] ,.add input[type = "tel"] , .add input[type = "date"], .add select{
+    padding: 7px;
+    border: 1px solid #666666;
+    border-radius: 4px;
+    font-size: 14px;
+    box-shadow: 0 0 3px #666;
+    min-width: 180px;
+    width: auto;
+
+
+
+}
+.add input[type = "text"]:focus, .add input[type = "email"]:focus,.add input[type = "tel"]:focus, .add input[type = "date"]:focus, .add select:focus{
+    outline: none;
+    border-color: #fa5a5a;
+
+
+}
+.add label{
+    font-size: 15px;
+}
+.add #notes{
+    outline: none;
+    width: 100%;
+
+}
+.add-button{
+    width: 100%;
+}
+
+.add form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 15px;
+    justify-content: center;
+}
+input [type = "radio"]{
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.add h2, .teacher-info h2 {
+
+    background-color: #666666;
+    color: white;
+    padding: 15px;
+    margin: 0;
+    border-radius: 5px 5px 0 0;
+    text-align: center;
+    pointer-events: none;
+}
+.add-columns{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: left;
+    gap:20px;
+    align-items: start;
+
+}
+.close-btn{
+    position: absolute;
+    top: 3px;
+    right: 7px;
+    font-size: 25px;
+    border: none;
+    color: white;
+    background-color: #666666;
+}
+.add-columns input,
+.add-columns select,
+.add-columns textarea {
+    width: 100%; /* Забезпечуємо однакову ширину для всіх полів введення */
+    box-sizing: border-box; /* Враховуємо відступи всередині елементів */
+}
+.close-btn:hover{
+    color: black;
+    background-color: #666666;
+}
+.add form{
+    padding: 20px;
+
+    flex-direction: column;
+}
+
+.add label{
+    color: #666666;
+}
+#notes{
+    padding: 20px;
+}
+h1 {
+    display: flex;
+    justify-content: center; /* Горизонтальне вирівнювання */
+    align-items: center;     /* Вертикальне вирівнювання */
+
+}
+.styled-table {
+    margin-left: -25px;
+
+    width: 110%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.styled-table thead tr {
+
+    color: #333;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 2px solid #666666;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #fae7e7;
+}
+
+
+
+
+.pagination {
+    text-align: left;
+    margin-top: 10px;
+
+}
+
+.pagination a {
+    margin: 0 5px;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+
+.pagination a:hover{
+    color: #e04b4b;
+
+}
+.pagination a.active {
+    color: #e04b4b;
+
+
+}
+
+
+
+.profile-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 5px solid #fa5a5a; /* Колір рамки */
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+.initials {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fa5a5a;
+
+}
+.carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden; /* Приховуємо зайві елементи за межами каруселі */
+    width: 100%; /* Карусель буде займати всю ширину контейнера */
+    gap: 10px; /* Додаємо відступи між картками викладачів */
+
+}
+
+.left, .right{
+
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
+    font-weight: bold;
+    color: #666666;
+    padding: 10px; /* Optional: Padding for better touch targets */
+    cursor: pointer;
+    z-index: 10;
+
+}
+.teacher-info{
+        position: fixed;
+        z-index: 1;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: auto;
+
+        max-height: 90%;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+
+}
+.teacher-info-body a href{
+    color: #fa5a5a;
+}
+.teacher-info-body{
+    padding: 30px;
+}
+
+.teacher-info .subject{
+    font-weight: bold;
+    color: #666666;
+}
+.teacher-info .email{
+    color: #e04b4b;
+    cursor: pointer;
+}
+.teacher-info .add-columns span{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+    margin-left: -5px;
+}
+@media (max-width: 1200px) {
+    .teachers-container {
+        grid-template-columns: repeat(4, 1fr); /* 4 колонки на великих екранах */
+    }
+}
+
+@media (max-width: 992px) {
+    .teachers-container{
+        grid-template-columns: repeat(3, 1fr); /* 3 колонки на середніх екранах */
+    }
+}
+
+@media (max-width: 768px) {
+    .teachers-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 колонки на планшетах */
+    }
+}
+
+@media (max-width: 576px) {
+    .teachers-container {
+
+        grid-template-columns: repeat(1, 1fr); /* 1 колонка на мобільних пристроях */
+    }
+}
