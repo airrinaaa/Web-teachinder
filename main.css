@@ -530,8 +530,8 @@ h2 {
      overflow-x: hidden;
      white-space: nowrap;
      transition: transform 0.5s ease;
-    margin-right: 20px;
-    margin-left: 20px;
+     margin-right: 20px;
+     margin-left: 20px;
 
  }
 
@@ -1146,4 +1146,18 @@ input [type = "radio"]{
 
 #notes{
     padding: 20px;
+}
+.charts-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap; /* Забороняє перенесення на наступний рядок */
+    gap: 20px;
+    margin-top: 20px;
+    overflow-x: auto; /* Додає прокручування, якщо діаграми не вміщаються */
+}
+
+.chart-item {
+    flex: 0 0 23%; /* Для чотирьох діаграм в одному рядку */
+    min-width: 200px; /* Мінімальна ширина для кожної діаграми */
 }
