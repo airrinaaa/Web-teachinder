@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachinder</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<div class="container">
+    <!-- -------------------- Верхнє Меню -------------------- -->
+    <div class="top-menu">
+        <header id="logo">Teachinder</header>
+        <div class="search">
+            <form>
+                <input type="text" placeholder="Name, note or age to search" class="search-bar" id="search-bar">
+            </form>
+            <button class="search-btn">Search</button>
+            <button class="clear-filters-btn">Clear Filters</button>
+        </div>
+    </div>
+
+    <!-- -------------------- Меню Категорій та Кнопка Додавання -------------------- -->
+    <div class="categories-menu">
+        <nav>
+            <a href="#teachers" data-target="teachers">Teachers</a>
+            <a href="#statistics-header" data-target="statistics-header">Statistics</a>
+            <a href="#favorites" data-target="favorite">Favorites</a>
+            <a href="#about" data-target="about">About</a>
+        </nav>
+        <button class="add-teacher-btn" id="add-teacher-button">Add Teacher</button>
+    </div>
+    <hr>
+
+    <!-- -------------------- Заголовок "Top Teachers" -------------------- -->
+    <h2 id="teachers">Top Teachers</h2>
+
+    <!-- -------------------- Секція Фільтрів -------------------- -->
+    <div class="filter-section">
+            <span>
+                <label for="age">Age</label>
+                <select id="age" name="age">
+                    <option value="all">All</option>
+                    <option value="18-31">18-31</option>
+                    <option value="32-45">32-45</option>
+                    <option value="46-60">46-60</option>
+                    <option value="60-80">60-80</option>
+                </select>
+            </span>
+        <span class="divider"></span>
+        <span>
+                <label for="region">Region</label>
+                <select id="region" name="region">
+                    <option value="all">All</option>
+                    <option value="europe">Europe</option>
+                    <option value="asia">Asia</option>
+                    <option value="america">America</option>
+                    <option value="australia">Australia</option>
+                </select>
+            </span>
+        <span class="divider"></span>
+        <span>
+                <label for="sex">Sex</label>
+                <select id="sex" name="sex">
+                    <option value="all">All</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </span>
+        <span class="divider"></span>
+        <label>
+            <input type="checkbox" name="photo" id="with-photo"> Only with photo
+        </label>
+        <span class="divider"></span>
+        <label>
+            <input type="checkbox" name="favorites" id="favorites"> Only favorites
+        </label>
+    </div>
+
+    <!-- -------------------- Контейнер Списку Викладачів -------------------- -->
+    <div class="teachers-container" id="teacher-list">
+        <!-- Список викладачів буде вставлено динамічно за допомогою JS -->
+    </div>
+
+    <!-- -------------------- Кнопка "Next" для Завантаження Більше Викладачів -------------------- -->
+    <button id="next-button">Next</button>
+
+    <hr>
+
+    <!-- -------------------- Таблиця Статистики -------------------- -->
+    <h2 id="statistics-header">Statistics</h2>
+    <table class="styled-table" id="statistics-table">
+        <thead>
+        <tr>
+            <th data-sort="full_name">Name &#x25B2;&#x25BC;</th>
+            <th data-sort="course">Speciality &#x25B2;&#x25BC;</th>
+            <th data-sort="age">Age &#x25B2;&#x25BC;</th>
+            <th data-sort="b_date">Birth Date &#x25B2;&#x25BC;</th>
+            <th data-sort="country">Country &#x25B2;&#x25BC;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Список статистики буде вставлено динамічно за допомогою JS -->
+        </tbody>
+    </table>
+
+    <!-- -------------------- Пагінація для Статистики -------------------- -->
+    <div class="pagination">
+        <!-- Посилання на сторінки буде вставлено динамічно за допомогою JS -->
+    </div>
+    <hr>
+
+    <!-- -------------------- Карусель "Favorites" -------------------- -->
+    <h2 id="favorite">Favorites</h2>
+    <div id="carousel-container" class="carousel-container">
+        <button type="button" class="carousel-button left-arrow">❮</button>
+        <div class="carousel-wrapper">
+            <div id="favorites-carousel" class="favorites-carousel">
+                <!-- Картки улюблених викладачів будуть вставлені тут динамічно -->
+            </div>
+        </div>
+        <button type="button" class="carousel-button right-arrow">❯</button>
+    </div>
+
+    <hr>
+
+    <!-- -------------------- Футер "About" -------------------- -->
+    <footer id="about">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+    </footer>
+
+    <!-- -------------------- Модальне Вікно для Деталей Викладача -------------------- -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="teacher-details">
+                <!-- Сюди будуть додаватися динамічно дані викладача -->
+            </div>
+        </div>
+    </div>
+
+    <!-- -------------------- Модальне Вікно для Додавання Викладача -------------------- -->
+    <!-- Модальне вікно для додавання нового викладача -->
+    <div id="add-teacher-modal" class="add">
+        <div class="add-top">
+            <h2>Add Teacher</h2>
+            <button class="close-btn">x</button>
+        </div>
+
+        <form id="add-teacher-form">
+            <!-- Name Field -->
+            <span>
+                <label for="full_name">Name:</label>
+                <input type="text" id="full_name" name="full_name" placeholder="Enter name" required><br><br>
+            </span>
+
+            <!-- Specialty Field -->
+            <span>
+                <label for="course">Specialty:</label>
+                <select id="course" name="course">
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="PE">PE</option>
+                    <option value="Psychology">Psychology</option>
+                </select><br><br>
+            </span>
+
+            <!-- Country and City Fields -->
+            <span class="add-columns">
+                <span>
+                    <label for="country">Country:</label>
+                    <select id="country" name="country" required>
+                        <option value="Ukraine">Ukraine</option>
+                        <option value="USA">USA</option>
+                        <option value="Germany">Germany</option>
+                    </select><br><br>
+                </span>
+                <span>
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" placeholder="Enter city"><br><br>
+                </span>
+            </span>
+
+            <!-- Email and Phone Fields -->
+            <span class="add-columns">
+                <span>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter email" required><br><br>
+                </span>
+                <span>
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter phone" required><br><br>
+                </span>
+            </span>
+
+            <!-- Date of Birth Field -->
+            <span>
+                <label for="dob">Date of birth:</label>
+                <input type="date" id="dob" name="dob"><br><br>
+            </span>
+
+            <!-- Gender Radio Buttons -->
+            <span>
+                <label for="male">Sex:</label>
+                <span class="gender-container">
+                    <label for="male">Male</label>
+                    <input type="radio" id="male" name="gender" value="male">
+
+                    <label for="female">Female</label>
+                    <input type="radio" id="female" name="gender" value="female">
+                </span>
+            </span>
+
+            <!-- Background Color Picker -->
+            <span>
+                <label for="bg_color">Background color:</label>
+                <input type="color" id="bg_color" name="bg_color"><br><br>
+            </span>
+
+            <!-- Profile Picture URL -->
+            <span>
+                <label for="picture_large">Profile Picture URL:</label>
+                <input type="url" id="picture_large" name="picture_large" placeholder="Enter picture URL"><br><br>
+            </span>
+
+            <!-- Notes Text Area -->
+            <span>
+                <label for="note">Notes:</label>
+                <textarea id="note" name="note" placeholder="Additional notes"></textarea><br><br>
+            </span>
+
+            <!-- Submit Button -->
+            <button type="submit" class="add-button">Add</button>
+        </form>
+    </div>
+    <!-- -------------------- Підключення JavaScript -------------------- -->
+    <script type="module" src="mainjs2.js"></script>
+</div>
+</body>
+</html>
