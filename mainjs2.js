@@ -47,24 +47,24 @@ function formatUser(user) {
     const course = courses[Math.floor(Math.random() * courses.length)];
 
     return {
-        gender: user.gender || '',
-        title: user.name?.title || '',
-        full_name: `${user.name?.first || ''} ${user.name?.last || ''}`.trim(),
-        city: user.location?.city || '',
-        state: user.location?.state || '',
-        country: user.location?.country || '',
+        gender: _.get(user, 'gender', ''),
+        title: _.get(user, 'name.title', ''),
+        full_name: _.trim(`${_.get(user, 'name.first', '')} ${_.get(user, 'name.last', '')}`),
+        city: _.get(user, 'location.city', ''),
+        state: _.get(user, 'location.state', ''),
+        country: _.get(user, 'location.country', ''),
         postcode: user.location?.postcode || '',
         coordinates: user.location?.coordinates || {},
         timezone: user.location?.timezone || {},
-        email: user.email || '',
+        email: _.get(user, 'email', ''),
         b_date: user.dob?.date || '',
-        age: calculateAge(user.dob?.date) || null,
+        age: calculateAge(_.get(user, 'dob.date', null)),
         phone: user.phone || '',
         picture_large: user.picture?.large || '',
         picture_thumbnail: user.picture?.thumbnail || '',
         id: user.login?.uuid || generateUniqueId(),
-        favorite: favorite,
-        course: course,
+        favorite: _.random(0, 1) < 0.5,  // Випадкове улюблене значення
+        course: _.sample(courses),
         bg_color: getRandomColor(),
         note: ''
     };
@@ -72,21 +72,18 @@ function formatUser(user) {
 
 // Function to validate users
 function validateUsers(users) {
-    let validUsersList = [];
-    let invalidUsers = [];
+    const validUsersList = [];
+    const invalidUsers = [];
 
-    users.forEach(user => {
+    _.forEach(users, (user) => {
         const errors = [];
-
-        if (!user.full_name || typeof user.full_name !== 'string') {
+        if (!_.isString(user.full_name) || _.isEmpty(user.full_name)) {
             errors.push('Invalid name');
         }
-
-        if (typeof user.age !== 'number' || isNaN(user.age)) {
+        if (!_.isNumber(user.age) || _.isNaN(user.age)) {
             errors.push('Invalid age');
         }
-
-        if (errors.length === 0) {
+        if (_.isEmpty(errors)) {
             validUsersList.push(user);
         } else {
             invalidUsers.push(user);
@@ -95,6 +92,7 @@ function validateUsers(users) {
 
     return { validUsers: validUsersList, invalidUsers };
 }
+
 
 // -------------------- Основні Функції --------------------
 
@@ -115,12 +113,16 @@ function createTeacherCard(teacher) {
         profileContent = `<div class="profile-circle initials">${initials}</div>`;
     }
 
+    // Розрахунок днів до наступного дня народження
+    const daysToBirthday = daysUntilNextBirthday(teacher.b_date);
+
     teacherCard.innerHTML = `
         <span class="star" data-id="${teacher.id}">${teacher.favorite ? '&#11088;' : '&#9734;'}</span>
         ${profileContent}
         <h3>${teacher.full_name}</h3>
         <div class="subject">${teacher.course}</div>
         <div>${teacher.country}</div>
+        <div class="birthday-info"> ${daysToBirthday} days to next birthday</div>  <!-- Додаємо нове поле -->
         <button class="view-details-btn" data-id="${teacher.id}">View Details</button>
     `;
 
@@ -128,10 +130,12 @@ function createTeacherCard(teacher) {
     const star = teacherCard.querySelector('.star');
     if (star) {
         star.addEventListener('click', () => toggleFavorite(teacher.id));
+
     }
 
     return teacherCard;
 }
+
 
 // Function to display teachers in main list
 function displayTeachers(teachers) {
@@ -152,18 +156,18 @@ async function fetchUsers(page = 1) {
         const formattedUsers = data.results.map(formatUser);
         const validationResult = validateUsers(formattedUsers);
 
-        // Додаємо нових валідних користувачів до списку
-        validUsers.push(...validationResult.validUsers);
 
+        validUsers.push(...validationResult.validUsers);
+        createAllCharts(validUsers);
         // Відправляємо кожного валідованого користувача на сервер через POST-запит
         validationResult.validUsers.forEach(user => {
-            // Відправляємо користувача на сервер
+
             fetch('http://localhost:3001/teachers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(user), // Конвертуємо об'єкт у JSON
+                body: JSON.stringify(user),
             })
                 .then(response => response.json())
                 .then(serverData => {
@@ -175,7 +179,7 @@ async function fetchUsers(page = 1) {
         });
 
         updateTeacherList(false);
-
+        createAllCharts(validUsers);
         if (data.results.length < usersPerPage) {
             const nextButton = document.getElementById('next-button');
             if (nextButton) {
@@ -187,7 +191,7 @@ async function fetchUsers(page = 1) {
     }
 }
 
-const nextButton = document.getElementById('next-button'); // Оголошуємо змінну nextButton
+const nextButton = document.getElementById('next-button');
 
 // Event listener for 'next-button'
 nextButton.addEventListener('click', () => {
@@ -296,6 +300,7 @@ function updateTeacherList(resetPage = false) {
             </div>`;
     } else {
         displayTeachers(filtered);
+        createAllCharts(filtered);
     }
 
     // Оновлення статистики
@@ -303,44 +308,61 @@ function updateTeacherList(resetPage = false) {
     if (resetPage) {
         statisticsCurrentPage = 1;
     }
-    displayStatistics(sortedStatisticsUsers, statisticsCurrentPage);
-    setupStatisticsPagination(sortedStatisticsUsers);
-    updateStatisticsSortIndicators();
+    createAllCharts(filtered);
 
     // Оновлення каруселі
     updateFavoritesCarousel();
 }
+let pieChart; // глобальна змінна для зберігання екземпляру діаграми
+
+function createPieChart(teachers) {
+    // Знищуємо попередню діаграму, якщо вона існує
+    if (pieChart) {
+        pieChart.destroy();
+    }
+
+    const courseCounts = {};
+    teachers.forEach(teacher => {
+        if (courseCounts[teacher.course]) {
+            courseCounts[teacher.course]++;
+        } else {
+            courseCounts[teacher.course] = 1;
+        }
+    });
+
+    const courses = Object.keys(courseCounts);
+    const counts = Object.values(courseCounts);
+    const colors = courses.map(() => `#${Math.floor(Math.random() * 16777215).toString(16)}`);
+
+    const ctx = document.getElementById('statisticsChart').getContext('2d');
+    pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: courses,
+            datasets: [{
+                label: 'Number of Teachers',
+                data: counts,
+                backgroundColor: colors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+            },
+        },
+    });
+}
+// Викликаємо функцію для створення діаграми
+createPieChart(validUsers);
 
 // Function to sort users based on a field and order
 function sortUsers(users, sortBy, order = 'ascending') {
-    if (!sortBy) return users; // Якщо sortBy не визначено, повертаємо не відсортований масив
-
-    return users.sort((a, b) => {
-        let valueA = a[sortBy];
-        let valueB = b[sortBy];
-
-        if (sortBy === 'b_date') {
-            valueA = new Date(valueA).getTime();
-            valueB = new Date(valueB).getTime();
-        }
-
-        if (typeof valueA === 'string') {
-            valueA = valueA.toLowerCase();
-            valueB = valueB.toLowerCase();
-        }
-
-        if (order === 'ascending') {
-            if (valueA < valueB) return -1;
-            if (valueA > valueB) return 1;
-            return 0;
-        } else if (order === 'descending') {
-            if (valueA > valueB) return -1;
-            if (valueA < valueB) return 1;
-            return 0;
-        } else {
-            throw new Error("Order must be 'ascending' or 'descending'");
-        }
-    });
+    const sorted = _.sortBy(users, [sortBy]);
+    return order === 'ascending' ? sorted : _.reverse(sorted);
 }
 
 // Function to search users by criteria
@@ -379,7 +401,6 @@ function searchUsersByCriteria(users, searchValue) {
         });
     });
 }
-
 // Function to clear all filters
 function clearAllFilters() {
     // Скидання всіх фільтрів
@@ -396,7 +417,7 @@ function clearAllFilters() {
 
 // Function to open modal with teacher details
 function openModalWithTeacherDetails(teacher) {
-    if (!teacher) return; // Якщо викладач не знайдений, виходимо
+    if (!teacher) return;
 
     // Отримуємо елементи модального вікна та деталі викладача
     const modal = document.getElementById('modal');
@@ -405,21 +426,14 @@ function openModalWithTeacherDetails(teacher) {
     // Визначаємо контент для профілю викладача
     let profileContent;
 
-    // Перевіряємо наявність фотографії
     if (teacher.picture_large) {
-        // Якщо є фотографія, показуємо її
         profileContent = `
             <picture>
                 <img src="${teacher.picture_large}" width="200" height="200" alt="${teacher.full_name}">
             </picture>
         `;
     } else {
-        // Якщо фото немає, показуємо блок з ініціалами
-        const initials = teacher.full_name
-            .split(' ')
-            .map(name => name[0])
-            .join(''); // Отримуємо ініціали з імені та прізвища
-
+        const initials = teacher.full_name.split(' ').map(name => name[0]).join('');
         profileContent = `
             <div class="profile-circle">
                 <span class="initials">${initials}</span>
@@ -427,7 +441,7 @@ function openModalWithTeacherDetails(teacher) {
         `;
     }
 
-    // Відображаємо деталі викладача в модальному вікні
+    // Додаємо блок для карти і деталі викладача
     teacherDetails.innerHTML = `
         <div class="teacher-info">
             <div class="add-top">
@@ -436,7 +450,7 @@ function openModalWithTeacherDetails(teacher) {
             </div>
             <div class="teacher-info-body">
                 <div class="add-columns">
-                    ${profileContent}  <!-- Фото або ініціали викладача -->
+                    ${profileContent}
                     <span>
                         <h3 class="name">${teacher.full_name}</h3>
                         <label><strong>Course:</strong> <span class="subject">${teacher.course}</span></label>
@@ -445,6 +459,7 @@ function openModalWithTeacherDetails(teacher) {
                         <label class="phone"><strong>Phone:</strong> ${teacher.phone}</label>
                     </span>
                 </div>
+                <div id="map" style="height: 300px;"></div> <!-- Контейнер для карти -->
                 <label><strong>Note:</strong> ${teacher.note || 'N/A'}</label>
                 <span class="star" data-id="${teacher.id}" style="font-size: 30px; cursor: pointer;">
                     ${teacher.favorite ? '&#11088;' : '&#9734;'}
@@ -453,38 +468,50 @@ function openModalWithTeacherDetails(teacher) {
         </div>
     `;
 
+    // Перевірка наявності координат
+    if (teacher.coordinates.latitude && teacher.coordinates.longitude) {
+        // Ініціалізація карти Leaflet з координатами викладача
+        const map = L.map('map', {
+            center: [teacher.coordinates.latitude, teacher.coordinates.longitude],
+            zoom: 13,
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const marker = L.marker([teacher.coordinates.latitude, teacher.coordinates.longitude]).addTo(map)
+            .bindPopup(`${teacher.full_name}`)
+            .openPopup();
+
+
+        setTimeout(() => {
+            map.invalidateSize();
+            // Центруємо карту на координати викладача після оновлення розмірів
+            map.setView([teacher.coordinates.latitude, teacher.coordinates.longitude], 13);
+        }, 200);
+    } else {
+        document.getElementById('map').innerHTML = '<p>Coordinates not available</p>';
+    }
+
     // Отримуємо елемент зірочки
     const favoriteStar = teacherDetails.querySelector('.star');
-
-    // Додаємо обробник події для натискання на зірочку
     if (favoriteStar) {
         favoriteStar.addEventListener('click', () => {
-            // Змінюємо статус "улюбленого" для викладача
             toggleFavorite(teacher.id);
-
-            // Оновлюємо вигляд зірочки залежно від нового статусу
             favoriteStar.innerHTML = teacher.favorite ? '&#11088;' : '&#9734;';
-
-            // Оновлюємо список улюблених викладачів у мапі
             userFavorites.set(teacher.id, teacher.favorite);
-
-            // Оновлюємо список викладачів
             updateTeacherList(false);
-
-            // Закриваємо модальне вікно після зміни
             closeModal();
         });
     }
-
+    createAllCharts(validUsers);
     // Показуємо модальне вікно
     modal.style.display = 'block';
-
-    // Застосовуємо розмиття до основного контенту, якщо елемент 'blur' існує
     const blurElement = document.getElementById('blur');
-    if (blurElement) {
-        blurElement.style.filter = 'blur(5px)';
-    }
+    if (blurElement) blurElement.style.filter = 'blur(5px)';
 }
+
 
 // Function to close modal
 function closeModal() {
@@ -513,13 +540,9 @@ function toggleFavorite(id) {
 // -------------------- Статистика --------------------
 
 // Initialize statistics table and pagination
-// Initialize statistics table and pagination
 function initializeStatistics() {
-    sortedStatisticsUsers = [...validUsers];  // Копіюємо масив без сортування
-    displayStatistics(sortedStatisticsUsers, statisticsCurrentPage);  // Відображаємо першу сторінку таблиці
-    setupStatisticsPagination(sortedStatisticsUsers);  // Налаштовуємо пагінацію
+   createAllCharts(validUsers);
 }
-
 
 // Function to display statistics
 function displayStatistics(teachers, page) {
@@ -647,6 +670,7 @@ function createFavoriteTeacherCard(teacher) {
     const star = teacherCard.querySelector('.star');
     if (star) {
         star.addEventListener('click', () => toggleFavoriteCarousel(teacher.id));
+        createAllCharts(validUsers);
     }
 
     return teacherCard;
@@ -745,6 +769,14 @@ function validateTeacherData(teacher) {
 
     return errors;
 }
+function getRandomLatitude() {
+    return (Math.random() * 180 - 90).toFixed(6); // 6 десяткових знаків
+}
+
+// Function to generate a random longitude between -180 and 180
+function getRandomLongitude() {
+    return (Math.random() * 360 - 180).toFixed(6); // 6 десяткових знаків
+}
 
 // Function to add a new teacher
 function addNewTeacher(teacherData) {
@@ -757,8 +789,8 @@ function addNewTeacher(teacherData) {
         country: teacherData.country,
         postcode: '',
         coordinates: {
-            latitude: '',
-            longitude: ''
+            latitude: parseFloat(getRandomLatitude()),
+            longitude: parseFloat(getRandomLongitude())
         },
         timezone: {
             offset: '',
@@ -896,10 +928,176 @@ document.getElementById('statistics-header').addEventListener('click', () => {
 
 // Функція для скидання сортування
 function resetSorting() {
-    statisticsSort = { column: null, order: null};
+    statisticsSort = { column: 'full_name', order: 'ascending' };
     sortedStatisticsUsers = sortUsers([...validUsers], statisticsSort.column, statisticsSort.order);
     statisticsCurrentPage = 1;
     displayStatistics(sortedStatisticsUsers, statisticsCurrentPage);
     setupStatisticsPagination(sortedStatisticsUsers);
     updateStatisticsSortIndicators();
+}
+function daysUntilNextBirthday(birthDate) {
+    const now = dayjs();  // поточна дата
+    const birthdayThisYear = dayjs(birthDate).year(now.year());  // день народження цього року
+
+    // Якщо день народження вже пройшов, беремо дату наступного року
+    if (birthdayThisYear.isBefore(now, 'day')) {
+        return birthdayThisYear.add(1, 'year').diff(now, 'day');
+    } else {
+        return birthdayThisYear.diff(now, 'day');
+    }
+}
+let ageChart, favoritesChart, regionChart, courseChart;
+// Функція для створення діаграми розподілу за віком
+function createAgeChart(teachers) {
+    if (ageChart) ageChart.destroy();
+
+    const ageGroups = {
+        '18-31': 0,
+        '32-45': 0,
+        '46-60': 0,
+        '61-80': 0
+    };
+
+    teachers.forEach(teacher => {
+        const age = teacher.age;
+        if (age >= 18 && age <= 31) ageGroups['18-31']++;
+        else if (age >= 32 && age <= 45) ageGroups['32-45']++;
+        else if (age >= 46 && age <= 60) ageGroups['46-60']++;
+        else if (age >= 61 && age <= 80) ageGroups['61-80']++;
+    });
+
+    const ctx = document.getElementById('ageChart').getContext('2d');
+    ageChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(ageGroups),
+            datasets: [{
+                label: 'Number of Teachers',
+                data: Object.values(ageGroups),
+                backgroundColor: Object.keys(ageGroups).map(() => getRandomColor()),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true },
+                title: { display: true }
+            }
+        },
+    });
+}
+
+// Функція для створення діаграми розподілу улюблених викладачів
+function createFavoritesChart(teachers) {
+    if (favoritesChart) favoritesChart.destroy();
+
+    const favoritesCount = teachers.filter(teacher => teacher.favorite).length;
+    const nonFavoritesCount = teachers.length - favoritesCount;
+
+    const ctx = document.getElementById('favoritesChart').getContext('2d');
+    favoritesChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Favorites', 'Others'],
+            datasets: [{
+                data: [favoritesCount, nonFavoritesCount],
+                backgroundColor: [getRandomColor(), getRandomColor()],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: true }
+            }
+        },
+    });
+}
+
+// Функція для створення діаграми розподілу за регіонами
+function createRegionChart(teachers) {
+    if (regionChart) regionChart.destroy();
+
+    const regions = {
+        Europe: ['Germany', 'Denmark', 'Norway', 'France', 'Switzerland', 'Ireland', 'Netherlands', 'Spain', 'Turkey'],
+        Asia: ['Iran', 'China', 'Japan', 'India', 'Vietnam', 'South Korea', 'Singapore'],
+        America: ['United States', 'Canada', 'Brazil', 'Mexico', 'Argentina'],
+        Australia: ['Australia']
+    };
+
+    const regionCounts = {
+        Europe: 0,
+        Asia: 0,
+        America: 0,
+        Australia: 0
+    };
+
+    teachers.forEach(teacher => {
+        for (const [key, countries] of Object.entries(regions)) {
+            if (countries.includes(teacher.country)) {
+                regionCounts[key]++;
+                break;
+            }
+        }
+    });
+
+    const ctx = document.getElementById('regionChart').getContext('2d');
+    regionChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(regionCounts),
+            datasets: [{
+                data: Object.values(regionCounts),
+                backgroundColor: Object.keys(regionCounts).map(() => getRandomColor()),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: true}
+            }
+        },
+    });
+}
+
+// Функція для створення діаграми розподілу курсів
+function createCourseChart(teachers) {
+    if (courseChart) courseChart.destroy();
+
+    const courseCounts = _.countBy(teachers, 'course');
+    const courses = Object.keys(courseCounts);
+    const counts = Object.values(courseCounts);
+
+    const ctx = document.getElementById('courseChart').getContext('2d');
+    courseChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: courses,
+            datasets: [{
+                label: 'Number of Teachers',
+                data: counts,
+                backgroundColor: courses.map(() => getRandomColor()),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: true}
+            }
+        },
+    });
+}
+
+// Функція для створення всіх діаграм одночасно
+function createAllCharts(teachers) {
+    createAgeChart(teachers);
+    createFavoritesChart(teachers);
+    createRegionChart(teachers);
+    createCourseChart(teachers);
 }
